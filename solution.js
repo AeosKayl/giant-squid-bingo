@@ -3,7 +3,7 @@ import fs from "fs";
 const BOARD_SIZE = 5;
 
 // Read the contents of the "input.txt" file, convert it to a string, and split it into an array using line breaks ("\r\n").
-const inputArray = fs.readFileSync("./test.txt").toString().split("\r\n");
+const inputArray = fs.readFileSync("./input.txt").toString().split("\r\n");
 
 // Create an array of the 'drawnNumbers' by splitting the first element of the inputArray (comma-separated values) and converting them to numbers.
 const drawnNumbers = inputArray[0].split(",").map(Number);
@@ -12,12 +12,7 @@ let numberOrder = [];
 // Iterate through 'drawnNumbers' and store the index of each number of drawnNumbers in 'numberOrder' at the index of number.
 drawnNumbers.forEach((number, i) => {
   numberOrder[number] = i;
-  // console.log(number);
-  // console.log(i);
-  // console.log(numberOrder);
 });
-
-// console.log(numberOrder);
 
 // Initialize empty arrays of the first and last completed bingo boards
 let firstCompletedBoard = [];
@@ -38,7 +33,7 @@ const readBoard = (startIndex) => {
       .map((elem) => parseInt(elem));
   }
 
-  console.log("Current board", currentBoard);
+  // console.log("Current board", currentBoard);
   return currentBoard;
 };
 
@@ -48,15 +43,13 @@ const findBoardBingoIndex = (board) => {
   let boardBingoTimes = board.map((row) =>
     row.map((column) => (column = numberOrder[column]))
   );
-  console.log("board bingo times: ", boardBingoTimes);
 
   let boardBingoIndex = Number.MAX_SAFE_INTEGER;
 
   // Function to find the maximum value in an array and update 'boardBingoIndex' if the maximum value is smaller.
   const findMaxValue = (array) => {
     let max = Math.max(...array);
-    // console.log(arr);
-    // console.log("Max: ", max);
+
     if (max < boardBingoIndex) {
       boardBingoIndex = max;
     }
@@ -72,7 +65,6 @@ const findBoardBingoIndex = (board) => {
     findMaxValue(boardBingoTimes.map((row) => row[i]));
   }
   // Return the calculated index of bingo winning number in drawnNumbers.
-  console.log("board bingo index: ", boardBingoIndex);
   return boardBingoIndex;
 };
 
@@ -98,10 +90,8 @@ const calculateFinalScore = (board, bingodIndex) => {
 // Loop through inputArray and read all bingo Boards
 for (let index = 2; index < inputArray.length; index += BOARD_SIZE + 1) {
   let currentBoard = readBoard(index);
-  console.log("current read Board: ", currentBoard);
 
   let bingoIndex = findBoardBingoIndex(currentBoard);
-  console.log("bingo index: ", bingoIndex);
 
   // Update fastBingoIndex and firstCompletedBoard if bingoIndex is smaller.
   if (bingoIndex < fastBingoIndex) {
